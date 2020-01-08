@@ -73,23 +73,16 @@ else if (browser == "chrome") {
 
 // Helper functions
 
-function testNetwork(done, params, comparePub = false) {
+function testNetwork(done, params) {
     var phrase = params.phrase || 'abandon abandon ability';
     driver.findElement(By.css('.phrase'))
         .sendKeys(phrase);
     selectNetwork(params.selectText);
     driver.sleep(generateDelay).then(function() {
-        if (!comparePub) {
-            getFirstAddress(function(address) {
-                expect(address).toBe(params.firstAddress);
-                done();
-            });
-        } else {
-            getFirstPublicKey(function(pubkey) {
-                expect(pubkey).toBe(params.firstPubKey);
-                done();
-            });
-        }
+        getFirstAddress(function(address) {
+            expect(address).toBe(params.firstAddress);
+            done();
+        });
     });
 }
 
@@ -103,10 +96,6 @@ function getFirstRowValue(handler, selector) {
 
 function getFirstAddress(handler) {
     getFirstRowValue(handler, ".address");
-}
-
-function getFirstPublicKey(handler) {
-    getFirstRowValue(handler, ".pubkey");
 }
 
 function getFirstPath(handler) {
@@ -412,24 +401,10 @@ it('Allows selection of bitcoin testnet', function(done) {
     };
     testNetwork(done, params);
 });
-it('Allows selection of bitcoin regtest', function(done) {
-    var params = {
-        selectText: "BTC - Bitcoin RegTest",
-        firstAddress: "mucaU5iiDaJDb69BHLeDv8JFfGiyg2nJKi",
-    };
-    testNetwork(done, params);
-});
 it('Allows selection of litecoin', function(done) {
     var params = {
         selectText: "LTC - Litecoin",
         firstAddress: "LQ4XU8RX2ULPmPq9FcUHdVmPVchP9nwXdn",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of litecoin testnet', function(done) {
-    var params = {
-        selectText: "LTCt - Litecoin Testnet",
-        firstAddress: "mucaU5iiDaJDb69BHLeDv8JFfGiyg2nJKi",
     };
     testNetwork(done, params);
 });
@@ -441,25 +416,10 @@ it('Allows selection of ripple', function(done) {
     };
     testNetwork(done, params);
 });
-it('Allows selection of casinocoin', function(done) {
-    var params = {
-        selectText: "CSC - CasinoCoin",
-        firstAddress: "c3P5EUb27Pzk9dcGt4s7zQDQj4sC6Y81mT",
-        phrase: "ill clump only blind unit burden thing track silver cloth review awake useful craft whale all satisfy else trophy sunset walk vanish hope valve",
-    };
-    testNetwork(done, params);
-});
 it('Allows selection of dogecoin', function(done) {
     var params = {
         selectText: "DOGE - Dogecoin",
         firstAddress: "DPQH2AtuzkVSG6ovjKk4jbUmZ6iXLpgbJA",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of dogecoin testnet', function(done) {
-    var params = {
-        selectText: "DOGEt - Dogecoin Testnet",
-        firstAddress: "niHnSJKHdwDyDxRMLBJrtNqpvHEsAFWe6B",
     };
     testNetwork(done, params);
 });
@@ -514,15 +474,8 @@ it('Allows selection of clam', function(done) {
 });
 it('Allows selection of crown', function(done) {
     var params = {
-        selectText: "CRW - Crown (Legacy)",
-        firstAddress: "18pWSwSUAQdiwMHUfFZB1fM2xue9X1FqE5",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of crown', function(done) {
-    var params = {
         selectText: "CRW - Crown",
-        firstAddress: "CRWKnVmVhvH1KWTYe6sq8xV4dFGcFpBEEkPQ",
+        firstAddress: "18pWSwSUAQdiwMHUfFZB1fM2xue9X1FqE5",
     };
     testNetwork(done, params);
 });
@@ -568,20 +521,6 @@ it('Allows selection of onixcoin', function(done) {
     };
     testNetwork(done, params);
 });
-it('Allows selection of lkrcoin', function(done) {
-    var params = {
-        selectText: "LKR - Lkrcoin",
-        firstAddress: "LfbT296e7AEEnn4bYDbL535Nd8P9g98CdJ",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of bolivarcoin', function(done) {
-    var params = {
-        selectText: "BOLI - Bolivarcoin",
-        firstAddress: "bbKzCAUR7hZ3nqfffy7VgrSz8LmAP3S5mK",
-    };
-    testNetwork(done, params);
-});
 it('Allows selection of peercoin', function(done) {
     var params = {
         selectText: "PPC - Peercoin",
@@ -595,6 +534,7 @@ it('Allows selection of ethereum', function(done) {
         firstAddress: "0xe5815d5902Ad612d49283DEdEc02100Bd44C2772",
     };
     testNetwork(done, params);
+    // TODO test private key and public key
 });
 it('Allows selection of slimcoin', function(done) {
     var params = {
@@ -617,15 +557,6 @@ it('Allows selection of bitcoin cash', function(done) {
     };
     testNetwork(done, params);
 });
-
-it('Allows selection of simpleledger(SLP)', function(done) {
-    var params = {
-        selectText: "SLP - Simple Ledger Protocol",
-        firstAddress: "simpleledger:qrtffz6ajfsn74gpur7y3epjquz42pvww5acewqmre",
-    };
-    testNetwork(done, params);
-});
-
 it('Allows selection of myriadcoin', function(done) {
     var params = {
         selectText: "XMY - Myriadcoin",
@@ -651,20 +582,6 @@ it('Allows selection of maza', function(done) {
     var params = {
         selectText: "MAZA - Maza",
         firstAddress: "MGW4Bmi2NEm4PxSjgeFwhP9vg18JHoRnfw",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of FIX', function(done) {
-    var params = {
-        selectText: "FIX - FIX",
-        firstAddress: "FS5MEU8fs5dUvsaSCSusV8RQtC8j2h3JEh",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of FIX testnet', function(done) {
-    var params = {
-        selectText: "FIX - FIX Testnet",
-        firstAddress: "XpnU1HHdNG5YxvG9Rez4wjmidchxqnZaNa",
     };
     testNetwork(done, params);
 });
@@ -738,13 +655,6 @@ it('Allows selection of Asiacoin', function(done) {
     };
     testNetwork(done, params);
 });
-it('Allows selection of Aryacoin', function(done) {
-    var params = {
-        selectText: "ARYA - Aryacoin",
-        firstAddress: "Abr6gX25KaU9BpwD34UfsL3A4n89NvYYSf",
-    };
-    testNetwork(done, params);
-});
 it('Allows selection of Auroracoin', function(done) {
     var params = {
         selectText: "AUR - Auroracoin",
@@ -787,13 +697,6 @@ it('Allows selection of Bitcoin Private', function(done) {
     };
     testNetwork(done, params);
 });
-it('Allows selection of Bitcoin SV', function(done) {
-    var params = {
-        selectText: "BSV - BitcoinSV",
-        firstAddress: "1N4mgtE5yxifch9jWs7Sds6oVqxdy2t576",
-    };
-    testNetwork(done, params);
-});
 it('Allows selection of Bitcoinz', function(done) {
     var params = {
         selectText: "BTCZ - Bitcoinz",
@@ -804,7 +707,7 @@ it('Allows selection of Bitcoinz', function(done) {
 it('Allows selection of BitCloud', function(done) {
     var params = {
         selectText: "BTDX - BitCloud",
-        firstAddress: "BHbWitXCNgTf1BhsRDNMP186EeibuzmrBi",
+        firstAddress: "BE9tnWxiR7ALgVhG8LLDi2W9pvtjzZMFoM",
     };
     testNetwork(done, params);
 });
@@ -854,13 +757,6 @@ it('Allows selection of Compcoin', function(done) {
     var params = {
         selectText: "CMP - Compcoin",
         firstAddress: "CLshtw3zhxkseBJS46UF12v3AFy9Dx7JVv",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of CPUchain', function(done) {
-    var params = {
-        selectText: "CPU - CPUchain",
-        firstAddress: "CWSpLpW7jS4mBHJnkz3mmL5s3yQMg93zK8",
     };
     testNetwork(done, params);
 });
@@ -926,13 +822,6 @@ it('Allows selection of Einsteinium', function(done) {
         firstAddress: "EVAABm9hXKHk2MpVMbwNakRubFnNha5m8m",
     };
     testNetwork(done, params);
-});
-it('Allows selection of EOSIO', function(done) {
-    var params = {
-        selectText: "EOS - EOSIO",
-        firstPubKey: "EOS692VJTBK3Rmw93onNnpnZ8ZtmE9PdxjDStArvbyzoe11QUTNoy",
-    };
-    testNetwork(done, params, true);
 });
 it('Allows selection of Europecoin', function(done) {
     var params = {
@@ -1077,7 +966,7 @@ it('Allows selection of Lynx', function(done) {
 it('Allows selection of Megacoin', function(done) {
     var params = {
         selectText: "MEC - Megacoin",
-        firstAddress: "MDfAj9CzkC1HpcUiVGnHp8yKTa7WXgu8AY",
+        firstAddress: "MHHRRPHcF8DvQpEySFF9M6fR8Qv4JH2fFC",
     };
     testNetwork(done, params);
 });
@@ -1095,24 +984,10 @@ it('Allows selection of Navcoin', function(done) {
     };
     testNetwork(done, params);
 });
-it('Allows selection of Nebulas', function(done) {
-    var params = {
-        selectText: "NAS - Nebulas",
-        firstAddress: "n1PbK61DGBfDoDusLw621G6sVSMfLLHdfnm",
-    };
-    testNetwork(done, params);
-});
 it('Allows selection of Neoscoin', function(done) {
     var params = {
         selectText: "NEOS - Neoscoin",
         firstAddress: "NgATz6QbQNXvayHQ4CpZayugb9HeaPDdby",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of Nix', function(done) {
-    var params = {
-        selectText: "NIX - NIX Platform",
-        firstAddress: "GgcNW2SQQXB4LWHRQTHKkQF3GzXNSLqS8u",
     };
     testNetwork(done, params);
 });
@@ -1158,13 +1033,6 @@ it('Allows selection of Omnicore', function(done) {
     };
     testNetwork(done, params);
 });
-it('Allows selection of DeepOnion', function(done) {
-    var params = {
-        selectText: "ONION - DeepOnion",
-        firstAddress: "DYREY7XCFXVqJ3x5UuN43k2JwD2s1kif48",
-    };
-    testNetwork(done, params);
-});
 it('Allows selection of Pesobit', function(done) {
     var params = {
         selectText: "PSB - Pesobit",
@@ -1200,20 +1068,6 @@ it('Allows selection of Putincoin', function(done) {
     };
     testNetwork(done, params);
 });
-it('Allows selection of Rapids', function(done) {
-    var params = {
-        selectText: "RPD - Rapids",
-        firstAddress: "Ri8XxUdZaXS5LqxmFJcFEjFinkaMbmhSUp",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of Ravencoin', function(done) {
-    var params = {
-        selectText: "RVN - Ravencoin",
-        firstAddress: "RBuDoVNnzvFsEcX8XKPm8ic4mgiCzjUCNk",
-    };
-    testNetwork(done, params);
-});
 it('Allows selection of Reddcoin', function(done) {
     var params = {
         selectText: "RDD - Reddcoin",
@@ -1238,9 +1092,8 @@ it('Allows selection of Rubycoin', function(done) {
 it('Allows selection of Salus', function(done) {
     var params = {
         selectText: "SLS - Salus",
-        firstAddress: "SNzPi1CafHFm3WWjRo43aMgiaEEj3ogjww",
+        firstAddress: "SgdYBmVytcW2aCYitdegwkUcCU7RSqYokB",
     };
-    testNetwork(done, params);
 });
 it('Allows selection of Smileycoin', function(done) {
     var params = {
@@ -1266,7 +1119,7 @@ it('Allows selection of stash', function(done) {
 it('Allows selection of stash testnet', function(done) {
     var params = {
         selectText: "STASH - Stash Testnet",
-        firstAddress: "yWQCTSkUst7ddYuebKsqa1kSoXEjpCkGKR",
+        firstAddress: "YdbhtMuGsPSkE6bPdNTHoFSszQKmK4S5LT",
     };
     testNetwork(done, params);
 });
@@ -1295,20 +1148,6 @@ it('Allows selection of Toa', function(done) {
     var params = {
         selectText: "TOA - Toa",
         firstAddress: "TSe1QAnUwQzUfbBusDzRJ9URttrRGKoNKF",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of TWINS', function(done) {
-    var params = {
-        selectText: "TWINS - TWINS",
-        firstAddress: "WPpJnfLLubNmF7HLNxg8d8zH5haxn4wri8",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of TWINS testnet', function(done) {
-    var params = {
-        selectText: "TWINS - TWINS Testnet",
-        firstAddress: "XpnU1HHdNG5YxvG9Rez4wjmidchxqnZaNa",
     };
     testNetwork(done, params);
 });
@@ -1361,13 +1200,6 @@ it('Allows selection of Vpncoin', function(done) {
     };
     testNetwork(done, params);
 });
-it('Allows selection of VeChain', function(done) {
-    var params = {
-        selectText: "VET - VeChain",
-        firstAddress: "0xdba55B1B6070f3a733D5eDFf35F0da4A00E455F2",
-    };
-    testNetwork(done, params);
-});
 it('Allows selection of Whitecoin', function(done) {
     var params = {
         selectText: "XWC - Whitecoin",
@@ -1403,9 +1235,9 @@ it('Allows selection of Zclassic', function(done) {
     };
     testNetwork(done, params);
 });
-it('Allows selection of Horizen', function(done) {
+it('Allows selection of Zencash', function(done) {
     var params = {
-        selectText: "ZEN - Horizen",
+        selectText: "ZEN - Zencash",
         firstAddress: "znWh9XASyW2dZq5tck84wFjiwuqVysi7q3p",
     };
     testNetwork(done, params);
@@ -1438,14 +1270,6 @@ it('Allows selection of MIX', function(done) {
     };
     testNetwork(done, params);
 });
-it('Allows selection of Monkey Project', function(done) {
-    var params = {
-        selectText: "MONK - Monkey Project",
-        firstAddress: "MnLrcnnUzKnf7TzufjRe5DLZqQJz18oYyu",
-    };
-    testNetwork(done, params);
-});
-
 it('Allows selection of Musicoin', function(done) {
     var params = {
         selectText: "MUSIC - Musicoin",
@@ -1476,15 +1300,8 @@ it('Allows selection of Callisto', function(done) {
 });
 it('Allows selection of HUSH', function(done) {
     var params = {
-        selectText: "HUSH - Hush (Legacy)",
+        selectText: "HUSH - Hush",
         firstAddress: "t1g6rLXUnJaiJuu4q4zmJjoa9Gk4fwKpiuA",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of HUSH3', function(done) {
-    var params = {
-        selectText: "HUSH - Hush3",
-        firstAddress: "RXWSQhwvw5jHPGP8bjwJhWoRnMLBnuPDKD",
     };
     testNetwork(done, params);
 });
@@ -1502,139 +1319,7 @@ it('Allows selection of Artax', function(done) {
     };
     testNetwork(done, params);
 });
-it('Allows selection of BitcoinGreen', function(done) {
-    var params = {
-        selectText: "BITG - Bitcoin Green",
-        firstAddress: "GeNGm9SkEfwbsws3UrrUSE2sJeyWYjzraY",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of ANON', function(done) {
-    var params = {
-        selectText: "ANON - ANON",
-        firstAddress: "AnU6pijpEeUZFWSTyM2qTqZQn996Zq1Xard",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of ProjectCoin', function(done) {
-    var params = {
-        selectText: "PRJ - ProjectCoin",
-        firstAddress: "PXZG97saRseSCftfe1mcFmfAA7pf6qBbaz",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of Phore', function(done) {
-    var params = {
-        selectText: "PHR - Phore",
-        firstAddress: "PJThxpoXAG6hqrmdeQQbVDX4TJtFTMMymC",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of Safecoin', function(done) {
-     var params = {
-         selectText: "SAFE - Safecoin",
-         firstAddress: "RtxHpnhJz6RY8k9owP3ua5QWraunmewB1G",
-     };
-     testNetwork(done, params);
- });
-it('Allows selection of Blocknode', function(done) {
-    var params = {
-        selectText: "BND - Blocknode",
-        firstAddress: "BG8xZSAur2jYLG9VXt8dYfkKxxeR7w9bSe",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of Blocknode Testnet', function(done) {
-    var params = {
-        selectText: "tBND - Blocknode Testnet",
-        firstAddress: "bSptsFyDktFSKpWveRywJsDoJA2TC6qfHv",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of LitecoinZ', function(done) {
-    var params = {
-        selectText: "LTZ - LitecoinZ",
-        firstAddress: "L1VTXju7hLgKV4T7fGXS9sKsnm2gmtRCmyw",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of BlockStamp', function(done) {
-    var params = {
-        selectText: "BST - BlockStamp",
-        firstAddress: "15gypKtim4cVTj137ApfryG17RkvSbPazZ",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of DEXON', function(done) {
-    var params = {
-        selectText: "DXN - DEXON",
-        firstAddress: "0x136a58788033E028CCd740FbDec6734358DB56Ec",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of Ellaism', function(done) {
-    var params = {
-        selectText: "ELLA - Ellaism",
-        firstAddress: "0xa8B0BeA09eeBc41062308546a01d6E544277e2Ca",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of Ethersocial Network', function(done) {
-    var params = {
-        selectText: "ESN - Ethersocial Network",
-        firstAddress: "0x6EE99Be2A0C7F887a71e21C8608ACF0aa0D2b767",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of Stellar', function(done) {
-    var params = {
-        selectText: "XLM - Stellar",
-        firstAddress: "GCUK3NYYUXA2QGN6KU5RR36WAKN3Y5EANZV65XNAWN4XM4CHQ3G4DMO2",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of Wagerr', function(done) {
-    var params = {
-        selectText: "WGR - Wagerr",
-        firstAddress: "WYiVgQU39VcQxcnacoCiaZHZZLjDCJoS95",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of Groestlcoin', function(done) {
-    var params = {
-        selectText: "GRS - Groestlcoin",
-        firstAddress: "FZycsFvZ1eH1hbtyjBpAgJSukVw1bN6PBN",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of Groestlcoin Testnet', function(done) {
-    var params = {
-        selectText: "GRS - Groestlcoin Testnet",
-        firstAddress: "mucaU5iiDaJDb69BHLeDv8JFfGiygRPne9",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of Elastos', function(done) {
-    var params = {
-        selectText: "ELA - Elastos",
-        firstAddress: "EMccDcsn3SwPDcfeQMf3w7utqi8ioWYtkg",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of Energyweb', function(done) {
-    var params = {
-        selectText: "EWT - EnergyWeb",
-        firstAddress: "0x22171474844Fc7E8E99A3A69CCf1eDb5574FdD4c",
-    };
-    testNetwork(done, params);
-});
-it('Allows selection of Thought', function(done) {
-    var params = {
-        selectText: "THT - Thought",
-        firstAddress: "4B1Bh9GibDarFQrhtYU8krpc7WSjgGfYvo",
-    };
-    testNetwork(done, params);
-});
+
 
 // BIP39 seed is set from phrase
 it('Sets the bip39 seed from the prhase', function(done) {
@@ -2008,7 +1693,11 @@ it('Allows the user to set the BIP32 root key', function(done) {
 });
 
 // Setting BIP32 root key clears the existing phrase, passphrase and seed
+// TODO this doesn't work in selenium with chrome
 it('Confirms the existing phrase should be cleared', function(done) {
+    if (browser == "chrome") {
+        pending("Selenium + Chrome headless bug for alert, see https://stackoverflow.com/q/45242264");
+    }
     driver.findElement(By.css('.phrase'))
         .sendKeys('A non-blank but invalid value');
     driver.findElement(By.css('.root-key'))
@@ -2022,7 +1711,11 @@ it('Confirms the existing phrase should be cleared', function(done) {
 });
 
 // Clearing of phrase, passphrase and seed can be cancelled by user
+// TODO this doesn't work in selenium with chrome
 it('Allows the clearing of the phrase to be cancelled', function(done) {
+    if (browser == "chrome") {
+        pending("Selenium + Chrome headless bug for alert, see https://stackoverflow.com/q/45242264");
+    }
     driver.findElement(By.css('.phrase'))
         .sendKeys('abandon abandon ability');
     driver.sleep(generateDelay).then(function() {
@@ -2207,7 +1900,6 @@ it('Ignores excess whitespace in the mnemonic', function(done) {
 
 // Github Issue 23: Part 1: Use correct derivation path when changing tabs
 // https://github.com/iancoleman/bip39/issues/23
-// This test was failing for default timeout of 5000ms so changed it to +10s
 it('Uses the correct derivation path when changing tabs', function(done) {
     // 1) and 2) set the phrase
     driver.findElement(By.css('.phrase'))
@@ -2232,7 +1924,7 @@ it('Uses the correct derivation path when changing tabs', function(done) {
             });
         });
     });
-}, generateDelay + 10000);
+});
 
 // Github Issue 23 Part 2: Coin selection in derivation path
 // https://github.com/iancoleman/bip39/issues/23#issuecomment-238011920
@@ -3199,7 +2891,7 @@ it('Can change details while old addresses are still being generated', function(
                 });
         });
     });
-}, generateDelay + 10000);
+}, generateDelay + 5000);
 
 // Github issue 49
 // padding for binary should give length with multiple of 256
@@ -3692,106 +3384,6 @@ it('Can generate BIP141 addresses with P2WPKH-in-P2SH semanitcs', function(done)
     });
 });
 
-it('Can generate BIP141 addresses with P2WSH semanitcs', function(done) {
-    driver.findElement(By.css('#bip141-tab a'))
-        .click();
-    // Choose P2WSH
-    driver.executeScript(function() {
-        $(".bip141-semantics option[selected]").removeAttr("selected");
-        $(".bip141-semantics option").filter(function(i,e) {
-            return $(e).html() == "P2WSH (1-of-1 multisig)";
-        }).prop("selected", true);
-        $(".bip141-semantics").trigger("change");
-    });
-    driver.findElement(By.css(".phrase"))
-        .sendKeys("abandon abandon ability");
-    driver.sleep(generateDelay).then(function() {
-        driver.findElement(By.css("#root-key"))
-        .getAttribute("value")
-        .then(function(rootKey) {
-            expect(rootKey).toBe("ZprvAhadJRUYsNge9uHspaggavxU1BUQ8QwfT4Z9UGq5sKF2mSt1mVy8EckLAaoBdmLHyP5eYDJ3LxtmzMNnLg2MRFe7QN2ueF4NCH4s5PrCDR6");
-            getFirstAddress(function(address) {
-                expect(address).toBe("bc1q2qhee847pv438tgg8hc7mjy38n8dklleshettn344l0tgs0kj5hskz9p9r");
-                done();
-            });
-        })
-    });
-});
-
-it('Can generate BIP141 addresses with P2WSH-in-P2SH semanitcs', function(done) {
-    driver.findElement(By.css('#bip141-tab a'))
-        .click();
-    // Choose P2WSH-in-P2SH
-    driver.executeScript(function() {
-        $(".bip141-semantics option[selected]").removeAttr("selected");
-        $(".bip141-semantics option").filter(function(i,e) {
-            return $(e).html() == "P2WSH nested in P2SH (1-of-1 multisig)";
-        }).prop("selected", true);
-        $(".bip141-semantics").trigger("change");
-    });
-    driver.findElement(By.css(".phrase"))
-        .sendKeys("abandon abandon ability");
-    driver.sleep(generateDelay).then(function() {
-        driver.findElement(By.css("#root-key"))
-        .getAttribute("value")
-        .then(function(rootKey) {
-            expect(rootKey).toBe("YprvANkMzkodih9AJc6kzDu4NqrxqDKxBnxAXx2vgswCVJs9iM4nWqoZcZ6C9NqbdrgNZjxqnjhUtJYE74mDcycLd1xWY2LV4LEsvZ1DgqxuAKe");
-            getFirstAddress(function(address) {
-                expect(address).toBe("343DLC4vGDyHBbBr9myL8zzZA1MdN9TM1G");
-                done();
-            });
-        })
-    });
-});
-
-it('Uses Vprv for bitcoin testnet p2wsh', function(done) {
-    selectNetwork("BTC - Bitcoin Testnet");
-    driver.findElement(By.css('#bip141-tab a'))
-        .click()
-    // Choose P2WSH
-    driver.executeScript(function() {
-        $(".bip141-semantics option[selected]").removeAttr("selected");
-        $(".bip141-semantics option").filter(function(i,e) {
-            return $(e).html() == "P2WSH (1-of-1 multisig)";
-        }).prop("selected", true);
-        $(".bip141-semantics").trigger("change");
-    });
-    driver.findElement(By.css('.phrase'))
-        .sendKeys('abandon abandon ability');
-    driver.sleep(generateDelay).then(function() {
-        driver.findElement(By.css('.root-key'))
-            .getAttribute("value")
-            .then(function(path) {
-                expect(path).toBe("Vprv16YtLrHXxePM5ja5hXQbiJs5JKDAc4WcaXo5rZcrVMU6bMhUg1oY7fpPku3i819gvMcHvq1h8aELDsyfCEs19vj1Q3iDHRrESWyJConkoT1");
-                done();
-            })
-    });
-});
-
-it('Uses Uprv for bitcoin testnet p2wsh-in-p2sh', function(done) {
-    selectNetwork("BTC - Bitcoin Testnet");
-    driver.findElement(By.css('#bip141-tab a'))
-        .click()
-    // Choose P2WSH-in-P2SH
-    driver.executeScript(function() {
-        $(".bip141-semantics option[selected]").removeAttr("selected");
-        $(".bip141-semantics option").filter(function(i,e) {
-            return $(e).html() == "P2WSH nested in P2SH (1-of-1 multisig)";
-        }).prop("selected", true);
-        $(".bip141-semantics").trigger("change");
-    });
-    driver.findElement(By.css('.phrase'))
-        .sendKeys('abandon abandon ability');
-    driver.sleep(generateDelay).then(function() {
-        driver.findElement(By.css('.root-key'))
-            .getAttribute("value")
-            .then(function(path) {
-                expect(path).toBe("Uprv95RJn67y7xyEuRLHenkZYVUx9LkARJzAsVx3ZJMeyHMdVwosWD9K8JTe4Z1FeE4gwBVcnqKF3f82ZvJxkBxHS5E74fYnigxvqeke8ZV3Fp2");
-                done();
-            })
-    });
-});
-
 it('Can generate BIP141 addresses with P2WPKH semanitcs', function(done) {
     // This result tested against bitcoinjs-lib test spec for segwit address
     // using the first private key of this mnemonic and default path m/0
@@ -4190,27 +3782,6 @@ it('Shows litecoin BIP49 addresses', function(done) {
     });
 });
 
-it('Shows Groestlcoin BIP49 addresses', function(done) {
-    driver.findElement(By.css('.phrase'))
-        .sendKeys('abandon abandon ability');
-    selectNetwork("GRS - Groestlcoin");
-    driver.findElement(By.css('#bip49-tab a'))
-        .click()
-    // bip49 addresses are shown
-    driver.sleep(generateDelay).then(function() {
-        driver.findElement(By.css('#bip49 .available'))
-            .getAttribute("class")
-            .then(function(classes) {
-                expect(classes).not.toContain("hidden");
-                // check first address
-                getFirstAddress(function(address) {
-                    expect(address).toBe("3HXSCZwCypLyixMsF4Z1sN49noJtrm8gnX");
-                    done();
-                });
-            });
-    });
-});
-
 it('Can use root keys to generate segwit table rows', function(done) {
     // segwit uses ypub / zpub instead of xpub but the root key should still
     // be valid regardless of the encoding used to import that key.
@@ -4225,132 +3796,6 @@ it('Can use root keys to generate segwit table rows', function(done) {
     driver.sleep(generateDelay).then(function() {
         getFirstAddress(function(address) {
             expect(address).toBe("3QG2Y9AA4xZ846gKHZqNf7mvVKbLqMKxr2");
-            done();
-        });
-    });
-});
-
-// Pull Request 271
-// Allow converting mnemonic back to raw entropy value
-it('Converts mnemonics into raw entropy', function(done) {
-    driver.findElement(By.css('.phrase'))
-        .sendKeys('abandon abandon about');
-    driver.sleep(generateDelay).then(function() {
-        driver.findElement(By.css('.use-entropy'))
-            .click();
-        driver.findElement(By.css('.entropy'))
-            .getAttribute("value")
-            .then(function(entropy) {
-                expect(entropy).toBe("00000001");
-                driver.findElement(By.css('.phrase'))
-                    .getAttribute("value")
-                    .then(function(phrase) {
-                        expect(phrase).toBe("abandon abandon about");
-                        done();
-                    });
-            });
-    });
-});
-
-// Pull Request 279
-// Added Split Phrase Card Output
-it('Shows split prase cards', function(done) {
-    var originalPhrase = "ugly charge strong giant once anchor capable october thumb inject dwarf legal alley mixture shoot";
-    var originalWords = originalPhrase.split(' ');
-    driver.findElement(By.css('.phrase'))
-        .sendKeys(originalPhrase);
-    driver.sleep(generateDelay).then(function() {
-        driver.findElement(By.css('.phraseSplit'))
-            .getAttribute("value")
-            .then(function(cardsStr) {
-                var cards = cardsStr.split("\n");
-                expect(cards.length).toBe(3);
-                // test all 2-of-3 combos can be used to form full phrase
-                var combos = [[0,1],[0,2],[1,2]];
-                for (var i=0; i<combos.length; i++) {
-                    var combo = combos[i];
-                    var a = combo[0];
-                    var b = combo[1];
-                    var phrase = cards[a] + " " + cards[b];
-                    // check all original words are present
-                    for (var j=0; j<originalWords.length; j++) {
-                        var originalWord = originalWords[j];
-                        expect(phrase).toContain(originalWord);
-                    }
-                }
-                done();
-            });
-    });
-});
-
-// It allows manually specifying the entropy type
-it('Allows entropy type to be manually selected', function(done) {
-    driver.findElement(By.css('.use-entropy'))
-        .click();
-    // use decimal entropy
-    driver.findElement(By.css('.entropy'))
-        .sendKeys("91");
-    // manually change to binary entropy
-    driver.executeScript(function() {
-        $(".entropy-container input[value='binary']").click();
-    });
-    driver.sleep(entropyFeedbackDelay).then(function() {
-        driver.findElement(By.css('.entropy-container'))
-            .getText()
-            .then(function(text) {
-                // overide 91 to be just 1
-                var key = "Filtered Entropy";
-                var value = "1";
-                var reText = key + "\\s+" + value;
-                var re = new RegExp(reText);
-                expect(text).toMatch(re);
-                // overide automatic decimal to binary
-                var key = "Entropy Type";
-                var value = "binary";
-                var reText = key + "\\s+" + value;
-                var re = new RegExp(reText);
-                expect(text).toMatch(re);
-                // overide 2 events to 1
-                var key = "Event Count";
-                var value = 1;
-                var reText = key + "\\s+" + value;
-                var re = new RegExp(reText);
-                expect(text).toMatch(re);
-                // overide log2(10)*2 bits to 1 bit
-                var key = "Total Bits";
-                var value = 1;
-                var reText = key + "\\s+" + value;
-                var re = new RegExp(reText);
-                expect(text).toMatch(re);
-                done();
-            });
-    });
-});
-
-// https://github.com/iancoleman/bip39/issues/388
-// Make field for bip39 seed editable
-it('Generates addresses when seed is set', function(done) {
-    driver.findElement(By.css('.seed'))
-        .sendKeys("20da140d3dd1df8713cefcc4d54ce0e445b4151027a1ab567b832f6da5fcc5afc1c3a3f199ab78b8e0ab4652efd7f414ac2c9a3b81bceb879a70f377aa0a58f3");
-    driver.sleep(generateDelay).then(function() {
-        getFirstAddress(function(address) {
-            expect(address).toBe("1Di3Vp7tBWtyQaDABLAjfWtF6V7hYKJtug");
-            done();
-        });
-    });
-});
-
-// https://github.com/iancoleman/bip39/issues/169
-it('Generates ethereum addresses from a public key', function(done) {
-    var pubkey = "xpub68UK3hrMEp2jLPxPASgXSiqiUsQsUWZHCeuu6NqcJLt259LMeWzwDyufXLN1QmjLeLRY5he4QfArDDLbsXiw3xN3kFcYtyDy74BY73RPhhW";
-    driver.findElement(By.css('.root-key'))
-      .sendKeys(pubkey);
-    driver.findElement(By.css('#bip32-tab a'))
-        .click()
-    selectNetwork('ETH - Ethereum');
-    driver.sleep(generateDelay).then(function() {
-        getFirstAddress(function(address) {
-            expect(address).toBe("0x1Bd54748903438C7E386b4a3fCbe16237A316a98");
             done();
         });
     });

@@ -16,7 +16,7 @@
 
 window.Entropy = new (function() {
 
-    var TWO = new libs.BigInteger.BigInteger(2);
+    var TWO = new BigInteger(2);
 
     // matchers returns an array of the matched events for each type of entropy.
     // eg
@@ -67,9 +67,9 @@ window.Entropy = new (function() {
         return ints;
     }
 
-    this.fromString = function(rawEntropyStr, baseStr) {
+    this.fromString = function(rawEntropyStr) {
         // Find type of entropy being used (binary, hex, dice etc)
-        var base = getBase(rawEntropyStr, baseStr);
+        var base = getBase(rawEntropyStr);
         // Convert dice to base6 entropy (ie 1-6 to 0-5)
         // This is done by changing all 6s to 0s
         if (base.str == "dice") {
@@ -103,11 +103,11 @@ window.Entropy = new (function() {
         // Convert base.ints to BigInteger.
         // Due to using unusual bases, eg cards of base52, this is not as simple as
         // using BigInteger.parse()
-        var entropyInt = libs.BigInteger.BigInteger.ZERO;
+        var entropyInt = BigInteger.ZERO;
         for (var i=base.ints.length-1; i>=0; i--) {
-            var thisInt = libs.BigInteger.BigInteger.parse(base.ints[i]);
+            var thisInt = BigInteger.parse(base.ints[i]);
             var power = (base.ints.length - 1) - i;
-            var additionalEntropy = libs.BigInteger.BigInteger.parse(base.asInt).pow(power).multiply(thisInt);
+            var additionalEntropy = BigInteger.parse(base.asInt).pow(power).multiply(thisInt);
             entropyInt = entropyInt.add(additionalEntropy);
         }
         // Convert entropy to binary
@@ -166,14 +166,13 @@ window.Entropy = new (function() {
         return s;
     }
 
-    function getBase(str, baseStr) {
+    function getBase(str) {
         // Need to get the lowest base for the supplied entropy.
         // This prevents interpreting, say, dice rolls as hexadecimal.
         var binaryMatches = matchers.binary(str);
         var hexMatches = matchers.hex(str);
-        var autodetect = baseStr === undefined;
         // Find the lowest base that can be used, whilst ignoring any irrelevant chars
-        if ((binaryMatches.length == hexMatches.length && hexMatches.length > 0 && autodetect) || baseStr === "binary") {
+        if (binaryMatches.length == hexMatches.length && hexMatches.length > 0) {
             var ints = binaryMatches.map(function(i) { return parseInt(i, 2) });
             return {
                 ints: ints,
@@ -184,7 +183,7 @@ window.Entropy = new (function() {
             }
         }
         var cardMatches = matchers.card(str);
-        if ((cardMatches.length >= hexMatches.length / 2 && autodetect) || baseStr === "card") {
+        if (cardMatches.length >= hexMatches.length / 2) {
             var ints = convertCardsToInts(cardMatches);
             return {
                 ints: ints,
@@ -195,7 +194,7 @@ window.Entropy = new (function() {
             }
         }
         var diceMatches = matchers.dice(str);
-        if ((diceMatches.length == hexMatches.length && hexMatches.length > 0 && autodetect) || baseStr === "dice") {
+        if (diceMatches.length == hexMatches.length && hexMatches.length > 0) {
             var ints = diceMatches.map(function(i) { return parseInt(i) });
             return {
                 ints: ints,
@@ -206,7 +205,7 @@ window.Entropy = new (function() {
             }
         }
         var base6Matches = matchers.base6(str);
-        if ((base6Matches.length == hexMatches.length && hexMatches.length > 0 && autodetect) || baseStr === "base 6") {
+        if (base6Matches.length == hexMatches.length && hexMatches.length > 0) {
             var ints = base6Matches.map(function(i) { return parseInt(i) });
             return {
                 ints: ints,
@@ -217,7 +216,7 @@ window.Entropy = new (function() {
             }
         }
         var base10Matches = matchers.base10(str);
-        if ((base10Matches.length == hexMatches.length && hexMatches.length > 0 && autodetect) || baseStr === "base 10") {
+        if (base10Matches.length == hexMatches.length && hexMatches.length > 0) {
             var ints = base10Matches.map(function(i) { return parseInt(i) });
             return {
                 ints: ints,
@@ -328,7 +327,7 @@ window.Entropy = new (function() {
         // Math.LOG2E
         // log2(8) gave 2.9999999999999996 which when floored causes issues.
         // So instead use the BigInteger library to get it right.
-        return libs.BigInteger.BigInteger.log(x) / libs.BigInteger.BigInteger.log(2);
+        return BigInteger.log(x) / BigInteger.log(2);
     };
 
     // Depends on BigInteger
@@ -336,9 +335,9 @@ window.Entropy = new (function() {
         if (n == 0) {
             return 1;
         }
-        f = libs.BigInteger.BigInteger.ONE;
+        f = BigInteger.ONE;
         for (var i=1; i<=n; i++) {
-            f = f.multiply(new libs.BigInteger.BigInteger(i));
+            f = f.multiply(new BigInteger(i));
         }
         return f;
     }
